@@ -2,7 +2,8 @@
 const Database = require("@replit/database")
 const { MessageEmbed,Permissions } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const db = new Database()
+const db = new Database(process.env.DB_URL)
+require("dotenv").config()
 async function run(inter) {
   if (!inter.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
     await inter.reply({content: 'Sorry, you don\'t have permissions to do this!', ephemeral: true});

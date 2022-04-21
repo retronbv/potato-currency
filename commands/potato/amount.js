@@ -1,7 +1,8 @@
 const Database = require("@replit/database")
 const { MessageEmbed } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const db = new Database()
+require("dotenv").config()
+const db = new Database(process.env.DB_URL)
 async function run(inter) {
   const value  = await db.get(inter.user.id) || 0
   const exampleEmbed = new MessageEmbed()

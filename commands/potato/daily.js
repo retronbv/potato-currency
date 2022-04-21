@@ -2,7 +2,8 @@
 const Database = require("@replit/database")
 const { MessageEmbed } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const db = new Database()
+const db = new Database(process.env.DB_URL)
+require("dotenv").config()
 async function run(inter) {
 let cooldown = 84600000;
 

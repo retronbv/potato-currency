@@ -2,7 +2,8 @@
 const Database = require("@replit/database")
 const { MessageEmbed,Permissions } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const db = new Database()
+const db = new Database(process.env.DB_URL)
+require("dotenv").config()
 async function run(inter) {
   let users = await db.list()
   let filteredusers = users.filter(val=> !val.endsWith("-lastDaily"))
@@ -18,15 +19,18 @@ async function run(inter) {
     console.log(k,v)
     list[k] = v
   })
-  console.log(list)
   let keysSorted = Object.values(list).sort(function(a,b){return b-a})
   console.log(keysSorted);
   let cutusers= keysSorted.slice(0, 5)
+  console.log(cutusers)
+  var thingy = cutusers.toString()
+  console.log("hi")
+  console.log(thingy)
   const exampleEmbed = new MessageEmbed()
   .setColor('#da9c83')
   .setTitle('/potato leaderboard')
   .setAuthor({ name: inter.user.tag, iconURL: inter.user.displayAvatarURL()})
-  .setDescription(`hi`)
+  .setDescription(thingy)
     .setThumbnail("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/322/potato_1f954.png")
   .setTimestamp()
   .setFooter({ text: `in #${inter.channel.name}`});
