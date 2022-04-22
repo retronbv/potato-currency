@@ -24,7 +24,7 @@ async function run(inter) {
 }
 const data = new SlashCommandBuilder()
 	.setName('reset')
-	.setDescription('(Mods Only) Reset a user\' potato count and their daily cooldown.')
+	.setDescription('(Mods Only) Reset a user\'s potato count and their daily cooldown.')
   .addUserOption(option =>
 		option.setName('user')
 			.setDescription('The user to reset')

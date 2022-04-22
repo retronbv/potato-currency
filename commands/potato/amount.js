@@ -9,7 +9,7 @@ async function run(inter) {
 	.setColor('#da9c83')
 	.setTitle('/potato amount')
 	.setAuthor({ name: inter.user.tag, iconURL: inter.user.displayAvatarURL()})
-	.setDescription(`You have ${value.toString()} potatoes!`)
+	.setDescription(`You have ${value.toString()} potato${value <= 1 ? "" : "es"}!`)
     .setThumbnail("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/322/potato_1f954.png")
 	.setTimestamp()
 	.setFooter({ text: `in #${inter.channel.name}`});

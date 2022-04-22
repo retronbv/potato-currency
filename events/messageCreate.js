@@ -4,7 +4,7 @@ function probability(n){
 
 async function handler(msg) {
   if(msg.author.bot) return;
-  if (probability(0.10)) {
+  if (probability(0.05) && msg.content.length >= 5) {
     msg.channel.send(":potato:")
   }
 }

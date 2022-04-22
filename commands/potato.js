@@ -19,11 +19,25 @@ const data = new SlashCommandBuilder()
 	.setName('potato')
 	.setDescription('Potato Currency')
 for (const command of subcommands) {
+  //console.log(command)
+  if (command.name == "reset") {
+    data.addSubcommand(subcommand=>
+      subcommand
+        .setName(command.name)
+        .setDescription(command.description)
+        .addUserOption(option =>
+		option.setName('user')
+			.setDescription('The user to reset')
+			.setRequired(false)))
+  } else {
     data.addSubcommand(subcommand=>
       subcommand
         .setName(command.name)
         .setDescription(command.description))
+  }
+    
 }
+//console.log(data)
 /*
 .addSubcommand(subcommand =>
 		subcommand
