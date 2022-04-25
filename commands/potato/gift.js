@@ -12,7 +12,7 @@ async function run(inter) {
   let new_user_amount = user_amount + amount;
   let new_interactor_amount = interactor_amount - amount;
   let exampleEmbed = new MessageEmbed()
-  if (amount <= user_amount) {
+  if (amount <= interactor_amount) {
     await db.set(user.id, new_user_amount);
     await db.set(inter.user.id, new_interactor_amount);
   

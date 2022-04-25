@@ -41,7 +41,11 @@ for (const command of subcommands) {
       .addIntegerOption(option=>
           option.setName('amount')
             .setDescription('The amount of potatoes')
-            .setRequired(true)))
+            .setRequired(true))
+      .addIntegerOption(option=>
+          option.setName('daily')
+            .setDescription('The last claim of daily potato')
+            .setRequired(true))))
   } else if (command.name=="gift") {
     data.addSubcommand(subcommand=>
       subcommand
