@@ -38,6 +38,19 @@ for (const command of subcommands) {
 		option.setName('user')
 			.setDescription('The user to remove')
 			.setRequired(true)))
+  } else if (command.name == "set") {
+    data.addSubcommand(subcommand=>
+      subcommand
+        .setName(command.name)
+        .setDescription(command.description)
+        .addUserOption(option =>
+		option.setName('user')
+			.setDescription('The user to set')
+			.setRequired(true))
+      .addIntegerOption(option=>
+          option.setName('amount')
+            .setDescription('The amount of potatoes')
+            .setRequired(true)))
   } else if (command.name=="gift") {
     data.addSubcommand(subcommand=>
       subcommand
