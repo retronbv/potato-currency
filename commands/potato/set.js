@@ -11,7 +11,7 @@ async function run(inter) {
   }
   const user = inter.options.getUser('user') || inter.user;
   const amount = inter.options.getInteger('amount') || await db.get(user.id);
-  const daily_date = inter.options.getInteger('daily') || await db.get(user.id) + "-lastDaily");
+  const daily_date = inter.options.getInteger('daily') || await db.get(user.id) + "-lastDaily";
   await db.set(`${user.id}`,amount)
   await db.set(`${user.id}-lastDaily`, daily_date)
   const exampleEmbed = new MessageEmbed()
