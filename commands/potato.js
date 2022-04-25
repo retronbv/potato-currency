@@ -29,6 +29,19 @@ for (const command of subcommands) {
 		option.setName('user')
 			.setDescription('The user to reset')
 			.setRequired(false)))
+  } else if(command.name=="trade") {
+    data.addSubcommand(subcommand=>
+      subcommand
+        .setName(command.name)
+        .setDescription(command.description)
+        .addUserOption(option =>
+      option.setName('user')
+        .setDescription('User to trade to.')
+        .setRequired(true))
+      .addIntegerOption(option =>
+      option.setName('amount')
+          .setDescription('Amount of potatoes to trade.')
+          .setRequired(true)));
   } else {
     data.addSubcommand(subcommand=>
       subcommand
