@@ -58,7 +58,7 @@ for (const command of subcommands) {
       .addIntegerOption(option =>
       option.setName('amount')
           .setDescription('Amount of potatoes to gift.')
-          .setRequired(true)));
+          .setRequired(true).setMinValue(1)));
   } else if (command.name=="amount") {
     data.addSubcommand(subcommand=>
       subcommand
