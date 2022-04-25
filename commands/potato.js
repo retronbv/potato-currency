@@ -42,6 +42,15 @@ for (const command of subcommands) {
       option.setName('amount')
           .setDescription('Amount of potatoes to trade.')
           .setRequired(true)));
+  } else if (command.name=="amount") {
+    data.addSubcommand(subcommand=>
+      subcommand
+        .setName(command.name)
+        .setDescription(command.description)
+        .addUserOption(option =>
+      option.setName('user')
+        .setDescription('User to see the amount of.')
+        .setRequired(false)));
   } else {
     data.addSubcommand(subcommand=>
       subcommand
