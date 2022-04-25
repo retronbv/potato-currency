@@ -29,7 +29,16 @@ for (const command of subcommands) {
 		option.setName('user')
 			.setDescription('The user to reset')
 			.setRequired(false)))
-  } else if(command.name=="gift") {
+  } else if (command.name == "remove") {
+    data.addSubcommand(subcommand=>
+      subcommand
+        .setName(command.name)
+        .setDescription(command.description)
+        .addUserOption(option =>
+		option.setName('user')
+			.setDescription('The user to remove')
+			.setRequired(true)))
+  } else if (command.name=="gift") {
     data.addSubcommand(subcommand=>
       subcommand
         .setName(command.name)
