@@ -1,7 +1,5 @@
 module.exports = {
-  extends: ['eslint:all', 'hardcore', 'hardcore/node', 'hardcore/fp',
-  "plugin:jsonc/all",
-  "plugin:jsonc/prettier",],
+  extends: ['eslint:all', 'hardcore', 'hardcore/node', 'hardcore/fp'],
 
   env: {
     commonjs: true,
@@ -9,38 +7,24 @@ module.exports = {
     node: true
   },
 
-	ignorePatterns: [
-		"!**",
-		"node_modules",".cache",
-			".breakpoints",
-		".git",
-		".npm",
-    ".upm",
-    ".eslintcache",
-		"package-lock.json",
-		],
-overrides:[
-  {
-    files: "*.json",
-    parser: "jsonc-eslint-parser",
+  ignorePatterns: [
+    '!**',
+    'node_modules',
+    '.cache',
+    '.breakpoints',
+    '.git',
+    '.npm',
+    '.upm',
+    '.eslintcache',
+    'package-lock.json'
+  ],
 
-    parserOptions: {
-      jsonSyntax: "JSON",
-    },
-    rules: {
-      "jsdoc/require-file-overview": 0,
-      "jsonc/key-name-casing": 0,
-      "strict": 0,
-    },
-  },
-  {
-    files: "package.json",
-    rules: { "jsonc/sort-keys": 0 },
-  },],
   parserOptions: {
     ecmaVersion: 2022
   },
-	root: true,
+
+  root: true,
+
   rules: {
     quotes: [2, 'single', { avoidEscape: true }],
     'vars-on-top': 0,

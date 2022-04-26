@@ -1,15 +1,21 @@
 'use strict'
+
 const Database = require('@replit/database')
 const { MessageEmbed, Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const db = new Database(process.env.DB_URL)
+
+const database = new Database(process.env.DB_URL)
+
 require('dotenv').config()
+
 async function run(inter) {
   const user = inter.options.getUser('user')
   const amount = inter.options.getInteger('amount')
+
   if (user.id === inter.user.id || user.bot) {
     return await inter.reply({
       ephemeral: true,
+
       embeds: [
         new MessageEmbed()
           .setColor('#da9c83')
@@ -18,7 +24,7 @@ async function run(inter) {
             name: inter.user.tag,
             iconURL: inter.user.displayAvatarURL()
           })
-          .setDescription(`You can't give potatoes to that user!`)
+          .setDescription("You can't give potatoes to that user!")
           .setThumbnail(
             'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/322/potato_1f954.png'
           )
@@ -27,17 +33,20 @@ async function run(inter) {
       ]
     })
   }
-  let user_amount = await db.get(user.id)
-  let interactor_amount = await db.get(inter.user.id)
-  let new_user_amount = user_amount + amount
-  let new_interactor_amount = interactor_amount - amount
-  let exampleEmbed = new MessageEmbed()
-  if (amount <= interactor_amount) {
-    await db.set(user.id, new_user_amount)
-    await db.set(inter.user.id, new_interactor_amount)
 
-    //await db.set(`${user.id}`,0)
-    //await db.set(`${user.id}-lastDaily`, 0)
+  const user_amount = await database.get(user.id)
+  const interactor_amount = await database.get(inter.user.id)
+  const new_user_amount = user_amount + amount
+  const new_interactor_amount = interactor_amount - amount
+
+  let exampleEmbed = new MessageEmbed()
+
+  if (amount <= interactor_amount) {
+    await database.set(user.id, new_user_amount)
+    await database.set(inter.user.id, new_interactor_amount)
+
+    // Await db.set(`${user.id}`,0)
+    // Await db.set(`${user.id}-lastDaily`, 0)
 
     exampleEmbed = exampleEmbed
       .setColor('#da9c83')
@@ -67,7 +76,7 @@ async function run(inter) {
         name: inter.user.tag,
         iconURL: inter.user.displayAvatarURL()
       })
-      .setDescription(`Uhh, you dont have that many potatoes...`)
+      .setDescription('Uhh, you dont have that many potatoes...')
       .setThumbnail(
         'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/322/potato_1f954.png'
       )
@@ -76,6 +85,7 @@ async function run(inter) {
     await inter.reply({ ephemeral: true, embeds: [exampleEmbed] })
   }
 }
+
 const data = new SlashCommandBuilder()
   .setName('gift')
   .setDescription('Gift your potatoes to another user')
@@ -85,7 +95,8 @@ const data = new SlashCommandBuilder()
   .addUserOption(option =>
     option.setName('amount').setDescription('Amount of potatoes to gift.').setRequired(true)
   )
+
 module.exports = {
   meta: data,
-  run: run
+  run
 }

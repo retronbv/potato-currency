@@ -1,6 +1,7 @@
 !**
 .breakpoints
 .cache
+.eslintcache
 .env
 .git
 .upm

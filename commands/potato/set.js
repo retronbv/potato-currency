@@ -1,23 +1,33 @@
 'use strict'
+
 const Database = require('@replit/database')
 const { MessageEmbed, Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const db = new Database(process.env.DB_URL)
+
+const database = new Database(process.env.DB_URL)
+
 require('dotenv').config()
+
 async function run(inter) {
   const { application } = inter.client
+
   if (inter.user.id !== (application.partial ? await application.fetch() : application).owner.id) {
     await inter.reply({
       content: "Sorry, you don't have permissions to do this!",
       ephemeral: true
     })
+
     return
   }
+
   const user = inter.options.getUser('user') || inter.user
-  const amount = inter.options.getInteger('amount') || (await db.get(user.id))
-  const daily_date = inter.options.getInteger('daily') || (await db.get(user.id + '-lastDaily'))
-  await db.set(`${user.id}`, amount)
-  await db.set(`${user.id}-lastDaily`, daily_date)
+  const amount = inter.options.getInteger('amount') || (await database.get(user.id))
+  const daily_date =
+    inter.options.getInteger('daily') || (await database.get(`${user.id}-lastDaily`))
+
+  await database.set(`${user.id}`, amount)
+  await database.set(`${user.id}-lastDaily`, daily_date)
+
   const exampleEmbed = new MessageEmbed()
     .setColor('#da9c83')
     .setTitle('/potato set')
@@ -30,15 +40,18 @@ async function run(inter) {
     )
     .setTimestamp()
     .setFooter({ text: `in #${inter.channel.name}` })
+
   await inter.reply({ embeds: [exampleEmbed] })
 }
+
 const data = new SlashCommandBuilder()
   .setName('set')
   .setDescription("(Mods Only) Set a user's potato count.")
   .addUserOption(option =>
     option.setName('user').setDescription('The user to set').setRequired(false)
   )
+
 module.exports = {
   meta: data,
-  run: run
+  run
 }

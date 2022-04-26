@@ -1,14 +1,20 @@
 'use strict'
+
 const Database = require('@replit/database')
 const { MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const db = new Database(process.env.DB_URL)
-require('dotenv').config()
-async function run(inter) {
-  let cooldown = 84600000
 
-  let lastDaily = await db.get(`${inter.user.id}-lastDaily`)
-  var exampleEmbed = new MessageEmbed()
+const database = new Database(process.env.DB_URL)
+
+require('dotenv').config()
+
+async function run(inter) {
+  const cooldown = 84_600_000
+
+  const lastDaily = await database.get(`${inter.user.id}-lastDaily`)
+
+  const exampleEmbed = new MessageEmbed()
+
   if (lastDaily !== null && cooldown - (Date.now() - lastDaily) > 0) {
     exampleEmbed
       .setColor('#da9c83')
@@ -19,7 +25,7 @@ async function run(inter) {
       })
       .setDescription(
         `It hasnt been a day, <t:${Math.floor(
-          (await db.get(inter.user.id + '-lastDaily')) / 1000 + 86400
+          (await database.get(`${inter.user.id}-lastDaily`)) / 1000 + 86_400
         )}:R> you can claim another`
       )
       .setThumbnail(
@@ -29,11 +35,13 @@ async function run(inter) {
       .setFooter({ text: `in #${inter.channel.name}` })
     await inter.reply({ embeds: [exampleEmbed], ephemeral: true })
   } else {
-    let value = (await db.get(inter.user.id)) || 0
-    await db.set(inter.user.id, value + 1)
-    value = (await db.get(inter.user.id)) || 0
-    await db.set(`${inter.user.id}-lastDaily`, Date.now())
-    //console.log(await db.get(inter.user.id))
+    let value = (await database.get(inter.user.id)) || 0
+
+    await database.set(inter.user.id, value + 1)
+    value = (await database.get(inter.user.id)) || 0
+    await database.set(`${inter.user.id}-lastDaily`, Date.now())
+
+    // Console.log(await db.get(inter.user.id))
     exampleEmbed
       .setColor('#da9c83')
       .setTitle('/potato daily')
@@ -54,8 +62,10 @@ async function run(inter) {
     await inter.reply({ embeds: [exampleEmbed] })
   }
 }
+
 const data = new SlashCommandBuilder().setName('daily').setDescription('Claim your daily potato!')
+
 module.exports = {
   meta: data,
-  run: run
+  run
 }

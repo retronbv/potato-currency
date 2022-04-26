@@ -1,5 +1,7 @@
 const { Client, Intents } = require('discord.js')
+
 require('dotenv').config()
+
 const client = new Client({
   intents: [
     'GUILDS',
@@ -19,9 +21,12 @@ const client = new Client({
     'DIRECT_MESSAGE_TYPING',
     'GUILD_SCHEDULED_EVENTS'
   ],
+
   partials: ['USER', 'MESSAGE', 'CHANNEL', 'GUILD_MEMBER', 'REACTION', 'GUILD_SCHEDULED_EVENT']
 })
+
 const beeptools = require('beeptools')
+
 beeptools.KeepAlive()
 client.on('ready', async () => {
   client.guilds.cache.forEach(guild => {
@@ -29,7 +34,7 @@ client.on('ready', async () => {
       process.env.TOKEN,
       guild.id,
       client.application.id,
-      __dirname + '/commands'
+      `${__dirname}/commands`
     )
   })
   console.log('im in :)')
@@ -39,19 +44,24 @@ client.on('guildCreate', guild => {
     process.env.TOKEN,
     guild.id,
     client.application.id,
-    __dirname + '/commands'
+    `${__dirname}/commands`
   )
 })
 
 client.on('interactionCreate', async interaction => {
   if (interaction.isCommand()) {
-    var cmd = require(__dirname + '/commands/' + interaction.commandName + '.js').run
+    const cmd = require(`${__dirname}/commands/${interaction.commandName}.js`).run
+
     cmd(interaction)
   }
 })
 client.on('messageCreate', async message => {
-  if (message.partial) message = await message.fetch()
-  var cmd = require(__dirname + '/events/messageCreate').run
+  if (message.partial) {
+    message = await message.fetch()
+  }
+
+  const cmd = require(`${__dirname}/events/messageCreate`).run
+
   cmd(message)
 })
 client.login(process.env.TOKEN)
