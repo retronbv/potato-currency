@@ -34,6 +34,7 @@ async function run(inter) {
       .setThumbnail("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/322/potato_1f954.png")
     .setTimestamp()
     .setFooter({ text: `in #${inter.channel.name}`});
+    await inter.reply({embeds:[exampleEmbed]})
   } else {
     exampleEmbed = exampleEmbed.setColor('#da9c83')
     .setTitle('/potato gift')
@@ -42,8 +43,8 @@ async function run(inter) {
       .setThumbnail("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/322/potato_1f954.png")
     .setTimestamp()
     .setFooter({ text: `in #${inter.channel.name}`});
-  }
     await inter.reply({ephemeral:true,embeds:[exampleEmbed]})
+  }
   
 }
 const data = new SlashCommandBuilder()
