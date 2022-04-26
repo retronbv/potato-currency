@@ -1,2 +1,7 @@
+!**
+.breakpoints
 .env
-/node_modules
+.git
+.replit
+.replit.nix
+node_modules
