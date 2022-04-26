@@ -11,7 +11,8 @@ module.exports = {
 
 	ignorePatterns: [
 		"!**",
-		"node_modules",
+		"node_modules",".cache",
+			".breakpoints",
 		".git",
 		".npm",
     ".upm",

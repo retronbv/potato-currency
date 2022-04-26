@@ -1,7 +1,7 @@
 !**
 .breakpoints
+.cache
 .env
 .git
-.replit
-.replit.nix
+.upm
 node_modules
