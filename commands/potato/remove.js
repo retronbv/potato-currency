@@ -6,10 +6,7 @@ const db = new Database(process.env.DB_URL)
 require('dotenv').config()
 async function run(inter) {
   const { application } = inter.client
-  if (
-    inter.user.id !==
-    (application.partial ? await application.fetch() : application).owner.id
-  ) {
+  if (inter.user.id !== (application.partial ? await application.fetch() : application).owner.id) {
     await inter.reply({
       content: "Sorry, you don't have permissions to do this!",
       ephemeral: true
@@ -35,10 +32,7 @@ const data = new SlashCommandBuilder()
   .setName('remove')
   .setDescription('(Mods Only) Remove a users data in the potato bot.')
   .addUserOption(option =>
-    option
-      .setName('user')
-      .setDescription('The user to remove')
-      .setRequired(false)
+    option.setName('user').setDescription('The user to remove').setRequired(false)
   )
 module.exports = {
   meta: data,

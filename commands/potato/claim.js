@@ -5,12 +5,9 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 require('dotenv').config()
 const db = new Database(process.env.DB_URL)
 async function run(inter) {
-  let messages = Array.from(
-    (await inter.channel.messages.fetch({ limit: 6 })).values()
-  )
+  let messages = Array.from((await inter.channel.messages.fetch({ limit: 6 })).values())
   let filtered = messages.filter(
-    message =>
-      message.author.id == inter.client.user.id && message.content == ':potato:'
+    message => message.author.id == inter.client.user.id && message.content == ':potato:'
   )
   filtered.forEach(async message =>
     message.edit(`~~:potato:~~ - Claimed by <@${inter.user.id}>`).catch(err => {
@@ -29,9 +26,7 @@ async function run(inter) {
         name: inter.user.tag,
         iconURL: inter.user.displayAvatarURL()
       })
-      .setDescription(
-        `You now have ${value.toString()} potato${value === 1 ? '' : 'es'}!`
-      )
+      .setDescription(`You now have ${value.toString()} potato${value === 1 ? '' : 'es'}!`)
       .setThumbnail(
         'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/322/potato_1f954.png'
       )
@@ -55,9 +50,7 @@ async function run(inter) {
     await inter.reply({ ephemeral: true, embeds: [exampleEmbed] })
   }
 }
-const data = new SlashCommandBuilder()
-  .setName('claim')
-  .setDescription('Claim that potato!')
+const data = new SlashCommandBuilder().setName('claim').setDescription('Claim that potato!')
 module.exports = {
   meta: data,
   run: run

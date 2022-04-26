@@ -8,9 +8,7 @@ async function run(inter) {
   let users = await db.list()
 
   let filteredusers = users.filter(val => !val.endsWith('-lastDaily'))
-  let list = await Promise.all(
-    filteredusers.map(async id => [id, await db.get(id)])
-  )
+  let list = await Promise.all(filteredusers.map(async id => [id, await db.get(id)]))
   let keysSorted = list.sort(([, a], [, b]) => b - a)
   //console.log(keysSorted);
   let cutusers = keysSorted.slice(0, 5)

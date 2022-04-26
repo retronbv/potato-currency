@@ -54,9 +54,7 @@ async function run(inter) {
     await inter.reply({ embeds: [exampleEmbed] })
   }
 }
-const data = new SlashCommandBuilder()
-  .setName('daily')
-  .setDescription('Claim your daily potato!')
+const data = new SlashCommandBuilder().setName('daily').setDescription('Claim your daily potato!')
 module.exports = {
   meta: data,
   run: run

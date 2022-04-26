@@ -27,9 +27,12 @@
     "semi": false,
     "singleQuote": true,
     "trailingComma": "none",
-    "arrowParens": "avoid"
+    "arrowParens": "avoid",
+    "printWidth": 100
   },
   "devDependencies": {
+    "eslint": "8.14.0",
+    "eslint-config-hardcore": "^24.5.0",
     "prettier": "2.6.2"
   }
 }

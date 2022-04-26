@@ -19,14 +19,7 @@ const client = new Client({
     'DIRECT_MESSAGE_TYPING',
     'GUILD_SCHEDULED_EVENTS'
   ],
-  partials: [
-    'USER',
-    'MESSAGE',
-    'CHANNEL',
-    'GUILD_MEMBER',
-    'REACTION',
-    'GUILD_SCHEDULED_EVENT'
-  ]
+  partials: ['USER', 'MESSAGE', 'CHANNEL', 'GUILD_MEMBER', 'REACTION', 'GUILD_SCHEDULED_EVENT']
 })
 const beeptools = require('beeptools')
 beeptools.KeepAlive()
@@ -52,10 +45,7 @@ client.on('guildCreate', guild => {
 
 client.on('interactionCreate', async interaction => {
   if (interaction.isCommand()) {
-    var cmd = require(__dirname +
-      '/commands/' +
-      interaction.commandName +
-      '.js').run
+    var cmd = require(__dirname + '/commands/' + interaction.commandName + '.js').run
     cmd(interaction)
   }
 })

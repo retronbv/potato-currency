@@ -83,10 +83,7 @@ const data = new SlashCommandBuilder()
     option.setName('user').setDescription('User to gift to.').setRequired(true)
   )
   .addUserOption(option =>
-    option
-      .setName('amount')
-      .setDescription('Amount of potatoes to gift.')
-      .setRequired(true)
+    option.setName('amount').setDescription('Amount of potatoes to gift.').setRequired(true)
   )
 module.exports = {
   meta: data,
