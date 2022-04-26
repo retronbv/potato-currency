@@ -5,7 +5,8 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const db = new Database(process.env.DB_URL)
 require("dotenv").config()
 async function run(inter) {
-  if (!inter.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
+	const {application}=inter.client
+  if (inter.user.id !== (application.partial?await application.fetch():application).owner.id) {
     await inter.reply({content: 'Sorry, you don\'t have permissions to do this!', ephemeral: true});
     return;
   }
