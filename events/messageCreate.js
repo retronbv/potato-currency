@@ -1,7 +1,6 @@
-function probability(n) {
-  return Math.random() < n
-}
+'use strict'
 
+// eslint-disable-next-line fp/no-let -- We need this to change.
 let sinceLast = 0
 
 async function handler(message) {
@@ -9,10 +8,16 @@ async function handler(message) {
     return
   }
 
-  const messages = (await message.channel.messages.fetch({ limit: 6 })).toJSON()
-  const spam = messages.filter(e => e.author.bot || e.author.id == message.author.id).length + 1
+  const messages = await message.channel.messages.fetch({ limit: 10 })
+  const spam =
+    messages
+      .toJSON()
+      .filter(current => current.author.bot || current.author.id === message.author.id).length + 1
 
-  if (probability((0.01 * (message.cleanContent.length / 50 + 1) * (sinceLast / 3)) / (spam * 2))) {
+  if (
+    Math.random() <
+    (0.01 * (message.cleanContent.length / 50 + 1) * (sinceLast / 3)) / (spam * 2)
+  ) {
     message.channel.send(':potato:')
     sinceLast = 0
   } else {
@@ -20,6 +25,4 @@ async function handler(message) {
   }
 }
 
-module.exports = {
-  run: handler
-}
+module.exports = { run: handler }

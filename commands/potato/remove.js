@@ -1,21 +1,16 @@
 'use strict'
 
-const Database = require('@replit/database')
-const { MessageEmbed, Permissions } = require('discord.js')
+const { MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
+const Database = require('@replit/database')
 
-const database = new Database(process.env.DB_URL)
-
-require('dotenv').config()
+const database = new Database()
 
 async function run(inter) {
   const { application } = inter.client
 
   if (inter.user.id !== (application.partial ? await application.fetch() : application).owner.id) {
-    await inter.reply({
-      content: "Sorry, you don't have permissions to do this!",
-      ephemeral: true
-    })
+    await inter.reply({ content: "Sorry, you don't have permissions to do this!", ephemeral: true })
 
     return
   }
@@ -46,7 +41,4 @@ const data = new SlashCommandBuilder()
     option.setName('user').setDescription('The user to remove').setRequired(false)
   )
 
-module.exports = {
-  meta: data,
-  run
-}
+module.exports = { meta: data, run: run }

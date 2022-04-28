@@ -1,39 +1,34 @@
 'use strict'
 
-const Database = require('@replit/database')
-const { MessageEmbed, Permissions } = require('discord.js')
+const { MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
+const Database = require('@replit/database')
 
-const database = new Database(process.env.DB_URL)
-
-require('dotenv').config()
+const database = new Database()
 
 async function run(inter) {
   const { application } = inter.client
 
   if (inter.user.id !== (application.partial ? await application.fetch() : application).owner.id) {
-    await inter.reply({
-      content: "Sorry, you don't have permissions to do this!",
-      ephemeral: true
-    })
+    await inter.reply({ content: "Sorry, you don't have permissions to do this!", ephemeral: true })
 
     return
   }
 
   const user = inter.options.getUser('user') || inter.user
   const amount = inter.options.getInteger('amount') || (await database.get(user.id))
-  const daily_date =
-    inter.options.getInteger('daily') || (await database.get(`${user.id}-lastDaily`))
+  const dailyDate =
+    new Date(inter.options.getInteger('daily') ?? (await database.get(`${user.id}-lastDaily`)))
 
   await database.set(`${user.id}`, amount)
-  await database.set(`${user.id}-lastDaily`, daily_date)
+  await database.set(`${user.id}-lastDaily`, dailyDate)
 
   const exampleEmbed = new MessageEmbed()
     .setColor('#da9c83')
     .setTitle('/potato set')
     .setAuthor({ name: inter.user.tag, iconURL: inter.user.displayAvatarURL() })
     .setDescription(
-      `Set <@${user.id}>'s potatoes to **${amount} :potato:** and their last daily claim to <t:${daily_date}:R>!`
+      `Set ${user.toString()}'s potatoes to **${amount} :potato:** and their last daily claim to <t:${dailyDate}:R>!`
     )
     .setThumbnail(
       'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/322/potato_1f954.png'
@@ -51,7 +46,4 @@ const data = new SlashCommandBuilder()
     option.setName('user').setDescription('The user to set').setRequired(false)
   )
 
-module.exports = {
-  meta: data,
-  run
-}
+module.exports = { meta: data, run: run }

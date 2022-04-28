@@ -1,29 +1,24 @@
 'use strict'
 
-const Database = require('@replit/database')
-const { MessageEmbed, Permissions } = require('discord.js')
+const { MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
+const Database = require('@replit/database')
 
-const database = new Database(process.env.DB_URL)
-
-require('dotenv').config()
+const database = new Database()
 
 async function run(inter) {
   const user = inter.options.getUser('user')
   const amount = inter.options.getInteger('amount')
 
   if (user.id === inter.user.id || user.bot) {
-    return await inter.reply({
+    return inter.reply({
       ephemeral: true,
 
       embeds: [
         new MessageEmbed()
           .setColor('#da9c83')
           .setTitle('/potato gift')
-          .setAuthor({
-            name: inter.user.tag,
-            iconURL: inter.user.displayAvatarURL()
-          })
+          .setAuthor({ name: inter.user.tag, iconURL: inter.user.displayAvatarURL() })
           .setDescription("You can't give potatoes to that user!")
           .setThumbnail(
             'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/322/potato_1f954.png'
@@ -34,32 +29,24 @@ async function run(inter) {
     })
   }
 
-  const user_amount = await database.get(user.id)
-  const interactor_amount = await database.get(inter.user.id)
-  const new_user_amount = user_amount + amount
-  const new_interactor_amount = interactor_amount - amount
+  const originalUserPotatoes = await database.get(user.id)
+  const originalInteractorPotatoes = await database.get(inter.user.id)
+  const newUserAmount = originalUserPotatoes + amount
+  const newInteractorAmount = originalInteractorPotatoes - amount
 
-  let exampleEmbed = new MessageEmbed()
+  if (amount <= originalInteractorPotatoes) {
+    await database.set(user.id, newUserAmount)
+    await database.set(inter.user.id, newInteractorAmount)
 
-  if (amount <= interactor_amount) {
-    await database.set(user.id, new_user_amount)
-    await database.set(inter.user.id, new_interactor_amount)
-
-    // Await db.set(`${user.id}`,0)
-    // Await db.set(`${user.id}-lastDaily`, 0)
-
-    exampleEmbed = exampleEmbed
+    const exampleEmbed = new MessageEmbed()
       .setColor('#da9c83')
       .setTitle('/potato gift')
-      .setAuthor({
-        name: inter.user.tag,
-        iconURL: inter.user.displayAvatarURL()
-      })
+      .setAuthor({ name: inter.user.tag, iconURL: inter.user.displayAvatarURL() })
       .setDescription(
-        `<@${user.id}> now has **${new_user_amount.toString()} potato${
-          new_user_amount <= 1 ? '' : 'es'
-        }**! You now have **${new_interactor_amount.toString()} potato${
-          new_interactor_amount <= 1 ? '' : 'es'
+        `${user.toString()} now has **${newUserAmount.toString()} potato${
+          newUserAmount <= 1 ? '' : 'es'
+        }**! You now have **${newInteractorAmount.toString()} potato${
+          newInteractorAmount <= 1 ? '' : 'es'
         }**!`
       )
       .setThumbnail(
@@ -67,21 +54,20 @@ async function run(inter) {
       )
       .setTimestamp()
       .setFooter({ text: `in #${inter.channel.name}` })
+
     await inter.reply({ embeds: [exampleEmbed] })
   } else {
-    exampleEmbed = exampleEmbed
+    const exampleEmbed = new MessageEmbed()
       .setColor('#da9c83')
       .setTitle('/potato gift')
-      .setAuthor({
-        name: inter.user.tag,
-        iconURL: inter.user.displayAvatarURL()
-      })
+      .setAuthor({ name: inter.user.tag, iconURL: inter.user.displayAvatarURL() })
       .setDescription('Uhh, you dont have that many potatoes...')
       .setThumbnail(
         'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/322/potato_1f954.png'
       )
       .setTimestamp()
       .setFooter({ text: `in #${inter.channel.name}` })
+
     await inter.reply({ ephemeral: true, embeds: [exampleEmbed] })
   }
 }
@@ -96,7 +82,4 @@ const data = new SlashCommandBuilder()
     option.setName('amount').setDescription('Amount of potatoes to gift.').setRequired(true)
   )
 
-module.exports = {
-  meta: data,
-  run
-}
+module.exports = { meta: data, run: run }

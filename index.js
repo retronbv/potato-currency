@@ -1,8 +1,14 @@
-const { Client, Intents } = require('discord.js')
+'use strict'
 
 require('dotenv').config()
 
-const client = new Client({
+const path = require('path')
+const { Client } = require('discord.js')
+const beeptools = require('beeptools')
+
+beeptools.KeepAlive()
+
+new Client({
   intents: [
     'GUILDS',
     'GUILD_MESSAGES',
@@ -24,44 +30,40 @@ const client = new Client({
 
   partials: ['USER', 'MESSAGE', 'CHANNEL', 'GUILD_MEMBER', 'REACTION', 'GUILD_SCHEDULED_EVENT']
 })
-
-const beeptools = require('beeptools')
-
-beeptools.KeepAlive()
-client.on('ready', async () => {
-  client.guilds.cache.forEach(guild => {
+  .on('ready', client => {
+    client.guilds.cache.forEach(guild => {
+      beeptools.RegisterSlash(
+        process.env.TOKEN,
+        guild.id,
+        client.application.id,
+        path.resolve(__dirname,'./commands')
+      )
+    })
+    console.log('im in :)')
+  })
+  .on('guildCreate', guild => {
     beeptools.RegisterSlash(
       process.env.TOKEN,
       guild.id,
-      client.application.id,
-      `${__dirname}/commands`
+      guild.client.application.id,
+        path.resolve(__dirname,'./commands')
     )
   })
-  console.log('im in :)')
-})
-client.on('guildCreate', guild => {
-  beeptools.RegisterSlash(
-    process.env.TOKEN,
-    guild.id,
-    client.application.id,
-    `${__dirname}/commands`
-  )
-})
+  .on('interactionCreate', interaction => {
+    if (interaction.isCommand()) {
+       
+      const cmd = require( path.resolve(__dirname,'./commands',`./${interaction.commandName}.js`)).run
 
-client.on('interactionCreate', async interaction => {
-  if (interaction.isCommand()) {
-    const cmd = require(`${__dirname}/commands/${interaction.commandName}.js`).run
+      cmd(interaction)
+    }
+  })
+  .on('messageCreate', async message => {
+    if (message.partial) {
+      message = await message.fetch()
+    }
 
-    cmd(interaction)
-  }
-})
-client.on('messageCreate', async message => {
-  if (message.partial) {
-    message = await message.fetch()
-  }
+    const cmd = require(path.resolve(__dirname,'./commands','./messageCreate.js')).run
 
-  const cmd = require(`${__dirname}/events/messageCreate`).run
-
-  cmd(message)
-})
-client.login(process.env.TOKEN)
+    cmd(message)
+  })
+  .login(process.env.TOKEN)
