@@ -1,10 +1,10 @@
 'use strict'
 
+const Database = require('@replit/database')
 const { MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const Database = require('@replit/database')
 
-const database = new Database()
+const db = new Database()
 
 async function run(inter) {
   const user = inter.options.getUser('user')
@@ -29,25 +29,21 @@ async function run(inter) {
     })
   }
 
-  const originalUserPotatoes = await database.get(user.id)
-  const originalInteractorPotatoes = await database.get(inter.user.id)
+  const originalUserPotatoes = await db.get(user.id)
+  const originalInteractorPotatoes = await db.get(inter.user.id)
   const newUserAmount = originalUserPotatoes + amount
   const newInteractorAmount = originalInteractorPotatoes - amount
 
   if (amount <= originalInteractorPotatoes) {
-    await database.set(user.id, newUserAmount)
-    await database.set(inter.user.id, newInteractorAmount)
+    await db.set(user.id, newUserAmount)
+    await db.set(inter.user.id, newInteractorAmount)
 
     const exampleEmbed = new MessageEmbed()
       .setColor('#da9c83')
       .setTitle('/potato gift')
       .setAuthor({ name: inter.user.tag, iconURL: inter.user.displayAvatarURL() })
       .setDescription(
-        `${user.toString()} now has **${newUserAmount.toString()} potato${
-          newUserAmount <= 1 ? '' : 'es'
-        }**! You now have **${newInteractorAmount.toString()} potato${
-          newInteractorAmount <= 1 ? '' : 'es'
-        }**!`
+        `${user.toString()} now has **${newUserAmount} :potato:**! You now have **${newInteractorAmount} :potato:**!`
       )
       .setThumbnail(
         'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/322/potato_1f954.png'

@@ -10,8 +10,9 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node .",
+    "start": "node . --harmony --trace-warnings",
     "format": "prettier --write \"**\" --ignore-unknown"
+	  "lint":"eslint . --fix --cache"
   },
   "keywords": [],
   "author": "retronbv",

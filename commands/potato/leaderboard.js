@@ -1,22 +1,22 @@
 'use strict'
 
+const Database = require('@replit/database')
 const { MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const Database = require('@replit/database')
 
-const database = new Database()
+const db = new Database()
 
 async function run(inter) {
-  const users = await database.list()
+  const users = await db.list()
 
-  const filteredUsers = users.filter(value => !value.endsWith('-lastDaily'))
-  const list = await Promise.all(filteredUsers.map(async id => [id, await database.get(id)]))
+  const filteredUsers = users.filter(val => !val.endsWith('-lastDaily'))
+  const list = await Promise.all(filteredUsers.map(async id => [id, await db.get(id)]))
   const keysSorted = list.sort(([, one], [, two]) => two - one)
 
   const cutUsers = keysSorted.slice(0, 5)
 
   const thingy2 = cutUsers
-    .map(([id, potatoes], index) => `${index + 1}. <@${id}> (${potatoes} 🥔)`)
+    .map(([id, potatoes], index) => `${index + 1}. <@${id}> (**${potatoes}** 🥔)`)
     .join('\n')
 
   const exampleEmbed = new MessageEmbed()

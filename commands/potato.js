@@ -2,17 +2,19 @@
 
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const fs = require('fs')
+const path = require('path')
+
+const commands = fs
+  .readdirSync(path.resolve(__dirname, './potato'))
+  .filter(file => path.extname(file) === '.js')
+  .map(file => require(path.resolve(__dirname, './potato', `./${file}`)))
 
 function run(inter) {
-  const cmd = require(`${__dirname}/potato/${inter.options.getSubcommand()}.js`).run
+  const commandName = inter.options.getSubcommand()
+  const cmd = commands.find(command => command.meta.name === commandName).run
 
   cmd(inter)
 }
-
-const commands = fs
-  .readdirSync(`${__dirname}/potato/`)
-  .filter(file => file.endsWith('.js'))
-  .map(file => require(`${__dirname}/potato/${file}`))
 
 const data = new SlashCommandBuilder().setName('potato').setDescription('Potato Currency')
 
@@ -68,6 +70,8 @@ for (const commandData of commands) {
         )
       }
     }
+
+    return subcommand
   })
 }
 

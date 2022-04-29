@@ -22,6 +22,7 @@ module.exports = {
 
   rules: {
     'consistent-return': 0,
+    curly: [2, 'multi-or-nest', 'consistent'],
     'default-case': 0,
     'fp/no-loops': 0,
     'fp/no-mutating-methods': 0,
@@ -31,6 +32,20 @@ module.exports = {
     'import/no-dynamic-require': 0,
     'import/order': 0,
     'line-comment-position': 0,
+
+    'max-len': [
+      1,
+      {
+        code: 120,
+        comments: 140,
+        ignoreRegExpLiterals: true,
+        ignoreStrings: false,
+        ignoreTemplateLiterals: false,
+        ignoreUrls: true,
+        tabWidth: 4
+      }
+    ],
+
     'max-lines-per-function': 0,
     'max-statements': 0,
     'new-cap': 0,
@@ -45,16 +60,18 @@ module.exports = {
     'no-warning-comments': 1,
     'node/global-require': 0,
     'node/no-process-env': 0,
+    'node/no-sync': 0,
     'object-shorthand': [2, 'methods'],
     'prettier/prettier': 0,
     'promise/always-return': 0,
-	  'promise/catch-or-return':0,
+    'promise/catch-or-return': 0,
     'promise/prefer-await-to-then': 0,
     'putout/putout': 0,
     quotes: [2, 'single', { avoidEscape: true }],
     'security/detect-non-literal-require': 0,
     'sort-keys': [2, 'asc', { caseSensitive: false, natural: true, minKeys: 5 }],
     'unicorn/prefer-module': 0,
+    'unicorn/prevent-abbreviations': 0,
     'vars-on-top': 0
   }
 }

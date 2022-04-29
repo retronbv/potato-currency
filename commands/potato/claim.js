@@ -1,10 +1,10 @@
 'use strict'
 
+const Database = require('@replit/database')
 const { MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const Database = require('@replit/database')
 
-const database = new Database()
+const db = new Database()
 
 async function run(inter) {
   const messages = await inter.channel.messages.fetch({ limit: 5 })
@@ -14,22 +14,22 @@ async function run(inter) {
 
   await Promise.all(
     filtered.map(message =>
-      message.edit(`~~:potato:~~ - Claimed by <@${inter.user.id}>`).catch(error => {
+      message.edit(`||:potato:|| - Claimed by <@${inter.user.id}>`).catch(error => {
         console.error(error)
       })
     )
   )
 
   if (filtered.length > 0) {
-    const value = ((await database.get(inter.user.id)) || 0) + filtered.length
+    const value = ((await db.get(inter.user.id)) || 0) + filtered.length
 
-    await database.set(inter.user.id, value)
+    await db.set(inter.user.id, value)
 
     const exampleEmbed = new MessageEmbed()
       .setColor('#da9c83')
       .setTitle('/potato claim')
       .setAuthor({ name: inter.user.tag, iconURL: inter.user.displayAvatarURL() })
-      .setDescription(`You now have ${value.toString()} potato${value === 1 ? '' : 'es'}!`)
+      .setDescription(`You now have **${value}** :potato:!`)
       .setThumbnail(
         'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/322/potato_1f954.png'
       )
