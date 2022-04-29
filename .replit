@@ -1,5 +1,5 @@
 entrypoint = "index.js"
-
+run= "git pull https://github.com/retronbv/potato-currency main && node ."
 [interpreter]
 command = [
     "prybar-nodejs",
