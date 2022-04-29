@@ -28,7 +28,7 @@ jobs:
               if: ${{ !cancelled() }}
               run: npm run lint
 
-              - name: Commit
+            - name: Commit
               uses: stefanzweifel/git-auto-commit-action@v4.12.0
               with:
                   commit_message: "Lint and format code"
