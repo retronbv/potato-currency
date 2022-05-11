@@ -1,19 +1,39 @@
 {
+  "private": true,
   "name": "potato-currency",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.0",
+  "license": "MIT",
+  "homepage": "https://discord.gg/Y7B3hJCgw8",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/retronbv/potato-currency.git"
+  },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node . --harmony --trace-warnings",
+    "format": "prettier --write \"**\" --ignore-unknown",
+    "lint": "eslint . --fix --cache"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "retronbv",
   "dependencies": {
-    "@discordjs/builders": "^0.13.0",
-    "@replit/database": "^2.0.1",
-    "beeptools": "^2.1.0",
-    "discord.js": "^13.6.0",
-    "dotenv": "^16.0.0"
+    "@discordjs/builders": "0.13.0",
+    "@replit/database": "2.0.1",
+    "beeptools": "2.1.0",
+    "discord.js": "13.6.0",
+    "dotenv": "16.0.0"
+  },
+  "prettier": {
+    "useTabs": false,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "none",
+    "arrowParens": "avoid",
+    "printWidth": 100
+  },
+  "devDependencies": {
+    "eslint": "8.14.0",
+    "eslint-config-hardcore": "24.5.0",
+    "prettier": "2.6.2"
   }
 }

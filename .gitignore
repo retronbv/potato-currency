@@ -1,2 +1,8 @@
+!**
+.breakpoints
+.cache
+.eslintcache
 .env
-/node_modules
+.git
+.upm
+node_modules
