@@ -18,7 +18,7 @@
   "author": "retronbv",
   "dependencies": {
     "@discordjs/builders": "0.13.0",
-    "@replit/database": "2.0.1",
+    "@replit/database": "2.0.2",
     "beeptools": "2.1.0",
     "discord.js": "13.6.0",
     "dotenv": "16.0.0"
